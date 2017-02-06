@@ -1,24 +1,29 @@
 <!doctype html>
 <html>
   <head>
-
+    <link rel="stylesheet" href="popup.css" type="text/css">
   </head>
   <body>
-    <select id="process" onchange="populateLogs();">
-      <option value="ctm-depmarshall">ctm-depmarshall</option>
-      <option value="ctm-messenger">ctm-messenger</option>
-      <option value="ctm-poller">ctm-poller</option>
-      <option value="ctm-autoscheduler">ctm-autoscheduler</option>
-      <option value="ctm-jobhandler">ctm-jobhandler</option>
-      <option value="ctm-metrics">ctm-metrics</option>
-      <option value="ctm-msghub">ctm-msghub</option>
-      <option selected="'selected'" value="ctm-ui">ctm-ui</option>
-      <option value="ctm-deployscheduler">ctm-deployscheduler</option>
-      <option value="ctm-repopoller">ctm-repopoller</option>
-      <option value="task_instance">task_instance</option>
-      <option value="sequence_instance">sequence_instance</option>
-      <option value="pipeline_instance">pipeline_instance</option>
-    </select>
+    <div class="header">
+      <select id="process">
+        <option value="ctm-depmarshall">ctm-depmarshall</option>
+        <option value="ctm-messenger">ctm-messenger</option>
+        <option value="ctm-poller">ctm-poller</option>
+        <option value="ctm-autoscheduler">ctm-autoscheduler</option>
+        <option value="ctm-jobhandler">ctm-jobhandler</option>
+        <option value="ctm-metrics">ctm-metrics</option>
+        <option value="ctm-msghub">ctm-msghub</option>
+        <option selected="'selected'" value="ctm-ui">ctm-ui</option>
+        <option value="ctm-deployscheduler">ctm-deployscheduler</option>
+        <option value="ctm-repopoller">ctm-repopoller</option>
+        <option value="task_instance">task_instance</option>
+        <option value="sequence_instance">sequence_instance</option>
+        <option value="pipeline_instance">pipeline_instance</option>
+      </select>
+      <span>Filter since last restart?</span>
+      <input id="restart-filter" type="checkbox" />
+    </div>
+
     <div id="log_body"/>
   </body>
   <script src="popup.js"></script>

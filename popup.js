@@ -39,9 +39,15 @@ function writeLogsToPopup(resp){
     var logStart = this.responseText.indexOf("<pre>");
     var logEnd = this.responseText.indexOf("</pre>");
     var logs = this.responseText.substring(logStart, logEnd+6);
+    if (document.getElementById("restart-filter").checked){
+      serviceStart = logs.lastIndexOf("#######################################");
+      if(serviceStart >= 0)
+        logs = "<pre>" + logs.substring(serviceStart+39) //get rid of the #######################################
+    }
     popup.innerHTML = logs;
   }
 }
 
 document.addEventListener('DOMContentLoaded', populateLogs);
 document.getElementById("process").addEventListener("change", populateLogs);
+document.getElementById("restart-filter").addEventListener("change", populateLogs);
