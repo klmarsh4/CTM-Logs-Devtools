@@ -1,3 +1,12 @@
+function populateLogs(){
+  getCurrentTabUrl(function(url) {
+    // Put the image URL in Google search.
+    url = getCoreUrl(url);
+    var process = document.getElementById("process")
+    getLog(url, process.value);
+  });
+}
+
 function getCurrentTabUrl(callback) {
 
   var queryInfo = {
@@ -16,9 +25,9 @@ function getCoreUrl(url){
   return url.substring(0,end);
 }
 
-function getLog(coreUrl, log){
-  logUrl = coreUrl + "getlog?process=" + log
-  httpRequest = new XMLHttpRequest();
+function getLog(coreUrl, service){
+  var logUrl = coreUrl + "getlog?process=" + service
+  var httpRequest = new XMLHttpRequest();
   httpRequest.open('GET', logUrl, true); //true = async
   httpRequest.onreadystatechange = writeLogsToPopup;
   httpRequest.send(null); //null = get
@@ -26,7 +35,7 @@ function getLog(coreUrl, log){
 
 function writeLogsToPopup(resp){
   if (this.readyState == 4 && this.status == 200) {
-    var popup = document.getElementById("popup");
+    var popup = document.getElementById("log_body");
     var logStart = this.responseText.indexOf("<pre>");
     var logEnd = this.responseText.indexOf("</pre>");
     var logs = this.responseText.substring(logStart, logEnd+6);
@@ -34,10 +43,5 @@ function writeLogsToPopup(resp){
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  getCurrentTabUrl(function(url) {
-    // Put the image URL in Google search.
-    url = getCoreUrl(url);
-    getLog(url, "ctm-ui");
-  });
-});
+document.addEventListener('DOMContentLoaded', populateLogs);
+document.getElementById("process").addEventListener("change", populateLogs);
