@@ -19,15 +19,18 @@ function getCoreUrl(url){
 function getLog(coreUrl, log){
   logUrl = coreUrl + "getlog?process=" + log
   httpRequest = new XMLHttpRequest();
-  httpRequest.open('GET', logUrl, true); //true = asynch
-  httpRequest.onreadystatechange = printErrors;
+  httpRequest.open('GET', logUrl, true); //true = async
+  httpRequest.onreadystatechange = writeLogsToPopup;
   httpRequest.send(null); //null = get
 }
 
-function printErrors(resp){
+function writeLogsToPopup(resp){
   if (this.readyState == 4 && this.status == 200) {
     var popup = document.getElementById("popup");
-    popup.outerHTML=this.responseText
+    var logStart = this.responseText.indexOf("<pre>");
+    var logEnd = this.responseText.indexOf("</pre>");
+    var logs = this.responseText.substring(logStart, logEnd+6);
+    popup.innerHTML = logs;
   }
 }
 
