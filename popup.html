@@ -4,27 +4,41 @@
     <link rel="stylesheet" href="popup.css" type="text/css">
   </head>
   <body>
-    <div class="header">
-      <select id="process">
-        <option value="ctm-depmarshall">ctm-depmarshall</option>
-        <option value="ctm-messenger">ctm-messenger</option>
-        <option value="ctm-poller">ctm-poller</option>
-        <option value="ctm-autoscheduler">ctm-autoscheduler</option>
-        <option value="ctm-jobhandler">ctm-jobhandler</option>
-        <option value="ctm-metrics">ctm-metrics</option>
-        <option value="ctm-msghub">ctm-msghub</option>
-        <option selected="'selected'" value="ctm-ui">ctm-ui</option>
-        <option value="ctm-deployscheduler">ctm-deployscheduler</option>
-        <option value="ctm-repopoller">ctm-repopoller</option>
-        <option value="task_instance">task_instance</option>
-        <option value="sequence_instance">sequence_instance</option>
-        <option value="pipeline_instance">pipeline_instance</option>
-      </select>
-      <span>Filter since last restart?</span>
-      <input id="restart-filter" type="checkbox" />
+    <div id="header">
+      <div class="header-row">
+          <select id="process">
+          <option value="ctm-depmarshall">ctm-depmarshall</option>
+          <option value="ctm-messenger">ctm-messenger</option>
+          <option value="ctm-poller">ctm-poller</option>
+          <option value="ctm-autoscheduler">ctm-autoscheduler</option>
+          <option value="ctm-jobhandler">ctm-jobhandler</option>
+          <option value="ctm-metrics">ctm-metrics</option>
+          <option value="ctm-msghub">ctm-msghub</option>
+          <option selected="'selected'" value="ctm-ui">ctm-ui</option>
+          <option value="ctm-deployscheduler">ctm-deployscheduler</option>
+          <option value="ctm-repopoller">ctm-repopoller</option>
+          <option value="task_instance">task_instance</option>
+          <option value="sequence_instance">sequence_instance</option>
+          <option value="pipeline_instance">pipeline_instance</option>
+        </select>
+        <span>Filter since last restart?</span>
+        <input id="restart-filter" type="checkbox" />
+      </div>
+      <div id="log-level-filter-list" class="header-row">
+        <span class="log-level-filter">Debug:</span>
+        <input id="debug-filter" class="log-level-filter" value="DEBUG" type="checkbox" checked/>
+        <span class="log-level-filter">Info:</span>
+        <input id="info-filter" class="log-level-filter" value="INFO" type="checkbox" checked/>
+        <span class="log-level-filter">Warning:</span>
+        <input id="warning-filter" class="log-level-filter" value="WARNING" type="checkbox" checked/>
+        <span class="log-level-filter">Error:</span>
+        <input id="error-filter" class="log-level-filter" value="ERROR" type="checkbox" checked/>
+        <span class="log-level-filter">Critical:</span>
+        <input id="critical-filter" class="log-level-filter" value="CRITICAL" type="checkbox" checked/>
+      </div>
     </div>
 
-    <div id="log_body"/>
+    <div id="log-body"/>
   </body>
   <script src="popup.js"></script>
 </html>

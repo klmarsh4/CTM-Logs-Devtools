@@ -1,3 +1,7 @@
-.header > *{
+.header-row {
+  white-space:nowrap;
+}
+
+.header-row > *{
   margin-right: 5px;
 }

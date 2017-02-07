@@ -36,7 +36,7 @@ function getLog(coreUrl, service){
 function writeLogsToPopup(resp){
   if (this.readyState == 4 && this.status == 200) {
     console.log(this)
-    var popup = document.getElementById("log_body");
+    var popup = document.getElementById("log-body");
     var logStart = this.responseText.indexOf("<pre>");
     var logEnd = this.responseText.indexOf("</pre>");
     var logs = this.responseText.substring(logStart, logEnd+6);
@@ -46,17 +46,25 @@ function writeLogsToPopup(resp){
         logs = "<pre>" + logs.substring(serviceStart+39) //get rid of the #######################################
     }
     censoredLogs = censorLogLevels(logs)
-    console.log("censoredLogs", censoredLogs)
     popup.innerHTML = censoredLogs;
   }
 }
 
 function censorLogLevels(logs){
-  debugger;
-  var includedLevels = ["ERROR"];
-  var excludedLevels = ["DEBUG", "INFO", "WARNING", "CRITICAL"];
+  var logLevelCheckboxes = document.getElementsByClassName("log-level-filter");
+  var includedLevels = [], excludedLevels = [];
+  for (var j = 0; j < logLevelCheckboxes.length; j++){
+    if(logLevelCheckboxes[j].checked){
+      includedLevels.push(logLevelCheckboxes[j].value);
+    }
+    else {
+      excludedLevels.push(logLevelCheckboxes[j].value);
+    }
+  }
+  var specialIncludes = { //put lines in here if they are special lines we always want to include or exclude them
+    "#######################################" : true //include when the service is restarted
+  }
   logsByLine = logs.split('\n')
-  console.log("logsByLine", logsByLine);
   newLogs = logsByLine[0] + '\n'; //include the first line, it contains the <pre> and info about the log
   var includedPrev = false;
   for (var k = 1; k < logsByLine.length - 1; k++){
@@ -76,6 +84,9 @@ function censorLogLevels(logs){
         }
       }
     }
+    if(specialIncludes.hasOwnProperty(line)) {
+      include = specialIncludes[line];
+    }
     if(include){
       newLogs += (line + '\n');
     }
@@ -88,3 +99,4 @@ function censorLogLevels(logs){
 document.addEventListener('DOMContentLoaded', populateLogs);
 document.getElementById("process").addEventListener("change", populateLogs);
 document.getElementById("restart-filter").addEventListener("change", populateLogs);
+document.getElementById("log-level-filter-list").addEventListener("change", populateLogs);
