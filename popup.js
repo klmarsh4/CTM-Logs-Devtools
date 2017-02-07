@@ -67,12 +67,14 @@ function censorLogLevels(logs){
     }
   }
   var specialIncludes = { //put lines in here if they are special lines we always want to include or exclude them
-    "#######################################" : true //include when the service is restarted
+    "#######################################" : true,
+    "<pre>#######################################" : true,
+    "<pre>Traceback (most recent call last):" : true
   }
   logsByLine = logs.split('\n')
-  newLogs = logsByLine[0] + '\n'; //include the first line, it contains the <pre> and info about the log
+  newLogs = ""; //include the first line, it contains the <pre> and info about the log
   var includedPrev = false;
-  for (var k = 1; k < logsByLine.length - 1; k++){
+  for (var k = 0; k < logsByLine.length - 1; k++){
     var line = logsByLine[k];
     var include = false;
     for (var i = 0; i < includedLevels.length && include === false; i++){
@@ -97,7 +99,10 @@ function censorLogLevels(logs){
     }
     includedPrev = include;
   }
-  newLogs += logsByLine[logsByLine.length - 1]; //include </pre>
+  if(newLogs.indexOf("<pre>")  < 0){
+    newLogs = "<pre>" + newLogs; //<pre> will only be there if first line was included
+  }
+  newLogs += logsByLine[logsByLine.length - 1]; //always include </pre>
   return newLogs;
 }
 
