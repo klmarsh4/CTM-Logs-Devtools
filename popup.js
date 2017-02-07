@@ -11,17 +11,10 @@ function populateLogs(){
 }
 
 function getCurrentTabUrl(callback) {
-  var queryInfo = {
-    active: true,
-    currentWindow: true
-  };
-  chrome.tabs.query(queryInfo, function(tabs) {
-    var tab = tabs[0]
-    chrome.runtime.sendMessage(
-      {"tabId":tab.id},
-      callback
-    );
-  })
+  chrome.runtime.sendMessage(
+    {"tabId":chrome.devtools.inspectedWindow.tabId},
+    callback
+  );
 }
 
 function getCoreUrl(url){
@@ -31,29 +24,26 @@ function getCoreUrl(url){
 
 function getLog(coreUrl, service){
   var logUrl = coreUrl + "getlog?process=" + service
-  var httpRequest = new XMLHttpRequest();
-  httpRequest.open('GET', logUrl, true); //true = async
-  httpRequest.onreadystatechange = writeLogsToPopup;
-  httpRequest.send(null); //null = get
+  chrome.runtime.sendMessage(
+    {"logUrl":logUrl},
+      writeLogsToPopup
+  );
 }
 
 function writeLogsToPopup(resp){
-  if (this.readyState == 4 && this.status == 200) {
-    console.log(this)
-    var popup = document.getElementById("log-body");
-    var logStart = this.responseText.indexOf("<pre>");
-    var logEnd = this.responseText.indexOf("</pre>");
-    var logs = this.responseText.substring(logStart, logEnd+6);
-    if (document.getElementById("restart-filter").checked){
-      serviceStart = logs.lastIndexOf("#######################################");
-      if(serviceStart >= 0)
-        logs = "<pre>" + logs.substring(serviceStart+39) //get rid of the #######################################
-    }
-    if(useLogLevelFilters){
-      logs = censorLogLevels(logs)
-    }
-    popup.innerHTML = logs;
+  var popup = document.getElementById("log-body");
+  var logStart = resp.indexOf("<pre>");
+  var logEnd = resp.indexOf("</pre>");
+  var logs = resp.substring(logStart, logEnd+6);
+  if (document.getElementById("restart-filter").checked){
+    serviceStart = logs.lastIndexOf("#######################################");
+    if(serviceStart >= 0)
+      logs = "<pre>" + logs.substring(serviceStart+39) //get rid of the #######################################
   }
+  if(useLogLevelFilters){
+    logs = censorLogLevels(logs)
+  }
+  popup.innerHTML = logs;
 }
 
 function censorLogLevels(logs){
