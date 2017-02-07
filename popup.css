@@ -5,3 +5,7 @@
 .header-row > *{
   margin-right: 5px;
 }
+
+.hidden {
+  display: none;
+}

@@ -1,3 +1,6 @@
+var useLogLevelFilters = false;
+
+
 function populateLogs(){
   getCurrentTabUrl(function(url) {
     // Put the image URL in Google search.
@@ -45,8 +48,10 @@ function writeLogsToPopup(resp){
       if(serviceStart >= 0)
         logs = "<pre>" + logs.substring(serviceStart+39) //get rid of the #######################################
     }
-    censoredLogs = censorLogLevels(logs)
-    popup.innerHTML = censoredLogs;
+    if(useLogLevelFilters){
+      logs = censorLogLevels(logs)
+    }
+    popup.innerHTML = logs;
   }
 }
 
@@ -96,7 +101,19 @@ function censorLogLevels(logs){
   return newLogs;
 }
 
+function toggleLogLevelFilters(){
+  useLogLevelFilters = document.getElementById("log-level-filter-show").checked;
+  if(useLogLevelFilters){
+    document.getElementById("log-level-filter-list").classList.remove("hidden");
+  }
+  else{
+    document.getElementById("log-level-filter-list").classList.add("hidden");
+  }
+  populateLogs();
+}
+
 document.addEventListener('DOMContentLoaded', populateLogs);
 document.getElementById("process").addEventListener("change", populateLogs);
 document.getElementById("restart-filter").addEventListener("change", populateLogs);
 document.getElementById("log-level-filter-list").addEventListener("change", populateLogs);
+document.getElementById("log-level-filter-show").addEventListener("change", toggleLogLevelFilters);
