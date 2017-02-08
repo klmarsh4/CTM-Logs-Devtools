@@ -1,4 +1,3 @@
-console.log("masma       ");
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.tabId){

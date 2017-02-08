@@ -5,8 +5,9 @@ function populateLogs(){
   getCurrentTabUrl(function(url) {
     // Put the image URL in Google search.
     url = getCoreUrl(url);
-    var process = document.getElementById("process")
-    getLog(url, process.value);
+    var process = document.getElementById("process");
+    var numLines = document.getElementById("num-lines-input");
+    getLog(url, process.value, numLines.value);
   });
 }
 
@@ -22,8 +23,10 @@ function getCoreUrl(url){
   return url.substring(0,end);
 }
 
-function getLog(coreUrl, service){
-  var logUrl = coreUrl + "getlog?process=" + service
+function getLog(coreUrl, service, numLines, reverse){
+  var logUrl = coreUrl + "getlog?process=" + service;
+  var logUrl = numLines ? logUrl + "&lines=" + numLines : logUrl;
+  var logUrl = reverse ? logUrl + "&reverse=" + reverse : logUrl;
   chrome.runtime.sendMessage(
     {"logUrl":logUrl},
       writeLogsToPopup
@@ -109,7 +112,5 @@ function toggleLogLevelFilters(){
 }
 
 document.addEventListener('DOMContentLoaded', populateLogs);
-document.getElementById("process").addEventListener("change", populateLogs);
-document.getElementById("restart-filter").addEventListener("change", populateLogs);
-document.getElementById("log-level-filter-list").addEventListener("change", populateLogs);
-document.getElementById("log-level-filter-show").addEventListener("change", toggleLogLevelFilters);
+document.getElementById("header").addEventListener("change", toggleLogLevelFilters);
+document.getElementById("refresh-btn").addEventListener("click", toggleLogLevelFilters);

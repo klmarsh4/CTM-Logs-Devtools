@@ -6,7 +6,9 @@
   <body>
     <div id="header">
       <div class="header-row">
-          <select id="process">
+        <span>Lines:</span>
+        <input id="num-lines-input" type="number" value="100" />
+        <select id="process">
           <option value="ctm-depmarshall">ctm-depmarshall</option>
           <option value="ctm-messenger">ctm-messenger</option>
           <option value="ctm-poller">ctm-poller</option>
@@ -25,6 +27,7 @@
         <input id="restart-filter" type="checkbox" />
         <span>Show logging level filters?</span>
         <input id="log-level-filter-show" type="checkbox" />
+        <button id="refresh-btn">refresh</button>
       </div>
       <div id="log-level-filter-list" class="header-row hidden">
         <span class="log-level-filter">Debug:</span>
