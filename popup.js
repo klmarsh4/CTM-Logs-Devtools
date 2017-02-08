@@ -5,9 +5,10 @@ function populateLogs(){
   getCurrentTabUrl(function(url) {
     // Put the image URL in Google search.
     url = getCoreUrl(url);
-    var process = document.getElementById("process");
-    var numLines = document.getElementById("num-lines-input");
-    getLog(url, process.value, numLines.value);
+    var process = document.getElementById("process").value;
+    var numLines = document.getElementById("num-lines-input").value;
+    var reverse = document.getElementById("reverse-checkbox").checked;
+    getLog(url, process, numLines, reverse);
   });
 }
 
