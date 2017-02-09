@@ -11,6 +11,6 @@
   },
   "permissions": [
     "activeTab",
-    "http://localhost:8080/"
+    "<all_urls>"
   ]
 }
